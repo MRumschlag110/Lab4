@@ -3,8 +3,7 @@ package com.bignerdranch.android.runtracker;
 import android.support.v4.app.Fragment;
 
 public class RunActivity extends SingleFragmentActivity {
-    public static final String EXTRA_RUN_ID = 
-    		"com.bignerdranch.android.runtracker.run_id";
+    public static final String EXTRA_RUN_ID = "RUN_ID";
     
     @Override
     protected Fragment createFragment() {

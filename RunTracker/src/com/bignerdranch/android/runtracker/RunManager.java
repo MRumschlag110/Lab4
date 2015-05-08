@@ -1,12 +1,13 @@
 package com.bignerdranch.android.runtracker;
 
+import com.bignerdranch.android.runtracker.RunDatabaseHelper.LocationCursor;
 import com.bignerdranch.android.runtracker.RunDatabaseHelper.RunCursor;
 
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.location.Criteria;
+
 import android.location.Location;
 import android.location.LocationManager;
 import android.util.Log;
@@ -28,14 +29,12 @@ public class RunManager {
     private SharedPreferences mPrefs;
     private long mCurrentRunId;
     
-    
     private RunManager(Context appContext) {
         mAppContext = appContext;
         mLocationManager = (LocationManager)mAppContext.getSystemService(Context.LOCATION_SERVICE);
         mHelper = new RunDatabaseHelper(mAppContext);
         mPrefs = mAppContext.getSharedPreferences(PREFS_FILE, Context.MODE_PRIVATE);
         mCurrentRunId = mPrefs.getLong(PREF_CURRENT_RUN_ID, -1);
-    
     }
     
     public static RunManager get(Context c) {
@@ -131,5 +130,14 @@ public class RunManager {
     }
     public boolean isTrackingRun(Run run) {
     	return run != null && run.getId() == mCurrentRunId;
+    }
+    public Location getLastLocationForRun(long runId){
+    	Location location = null;
+    	LocationCursor cursor = mHelper.queryLastLocationForRun(runId);
+    	cursor.moveToFirst();
+    	if (!cursor.isAfterLast())
+    		location = cursor.getLocation();
+    	cursor.close();
+    	return location;
     }
 }
