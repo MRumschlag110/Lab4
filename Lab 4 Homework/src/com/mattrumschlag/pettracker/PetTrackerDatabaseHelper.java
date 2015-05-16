@@ -15,11 +15,13 @@ public class PetTrackerDatabaseHelper extends SQLiteOpenHelper {
 	public void onCreate(SQLiteDatabase db) {
 		db.execSQL("CREATE TABLE " + PetType.PETTYPE_TABLE_NAME + " ("
 				+ PetType._ID + " INTEGER PRIMARY KEY AUTOINCREMENT ,"
-				+ PetType.PET_TYPE_NAME + " TEXT" + ");");
+				+ PetType.PET_TYPE_NAME + " TEXT" 
+				+ ");");
 		db.execSQL("CREATE TABLE " + Pets.PETS_TABLE_NAME + "("
 				+ Pets._ID + " INTEGER PRIMARY KEY AUTOINCREMENT ,"
 				+ Pets.PET_NAME + " TEXT,"
-				+ Pets.PET_TYPE_ID + " INTEGER" + ");");
+				+ Pets.PET_TYPE_ID + " INTEGER" 
+				+ ");");
 	}
 
 	@Override

@@ -4,8 +4,6 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
-import android.view.Menu;
-import android.view.MenuItem;
 
 public class PetTrackerActivity extends ActionBarActivity {
 	protected PetTrackerDatabaseHelper mDatabase = null;
@@ -26,7 +24,7 @@ public class PetTrackerActivity extends ActionBarActivity {
 		if(mDB != null) {
 			mDB.close();
 		}
-		if(mDatabase != null);{
+		if(mDatabase != null){
 			mDatabase.close();
 		}
 	}

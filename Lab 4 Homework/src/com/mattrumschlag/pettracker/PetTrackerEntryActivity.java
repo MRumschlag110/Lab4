@@ -22,7 +22,7 @@ public class PetTrackerEntryActivity extends PetTrackerActivity {
 		setContentView(R.layout.petentry);
 		
 		fillAutoCompleteFromDatabase();
-	}
+	
 	final Button savePet = (Button)findViewById(R.id.ButtonSave);
 	savePet.setOnClickListener(new View.OnClickListener() {
 		public void onClick(View v) {
@@ -34,12 +34,18 @@ public class PetTrackerEntryActivity extends PetTrackerActivity {
 				String strPetType = petType.getText().toString().toLowerCase();
 				SQLiteQueryBuilder queryBuilder = new SQLiteQueryBuilder();
 				queryBuilder.setTables(PetType.PETTYPE_TABLE_NAME);
-				queryBuilder.appendWhere(PetType.PET_TYPE_NAME + "='" + strPetType + "'");
+				queryBuilder.appendWhere(PetType.PET_TYPE_NAME + "='" 
+				+ strPetType + "'");
 
 				Cursor c = queryBuilder.query(mDB, null, null, null, null, null, null);
+				
+				
+				
+				
+				
 				if (c.getCount() == 0) {
 					ContentValues typeRecordToAdd = new ContentValues();
-					typeRecordtoAdd.put(PetType.PET_TYPE_NAME, strPetType);
+					typeRecordToAdd.put(PetType.PET_TYPE_NAME, strPetType);
 					rowId = mDB.insert(PetType.PETTYPE_TABLE_NAME, PetType.PET_TYPE_NAME, typeRecordToAdd);
 					fillAutoCompleteFromDatabase();
 				} else {
@@ -47,9 +53,10 @@ public class PetTrackerEntryActivity extends PetTrackerActivity {
 					rowId = c.getLong(c.getColumnIndex(PetType._ID));
 				}
 				c.close();
+				
 				ContentValues petRecordToAdd = new ContentValues();
 				petRecordToAdd.put(Pets.PET_NAME, petName.getText().toString());
-				petRecordToAdd.put(Pets.PET_TYPE_ID), rowId);
+				petRecordToAdd.put(Pets.PET_TYPE_ID, rowId);
 	mDB.insert(Pets.PETS_TABLE_NAME, Pets.PET_NAME, petRecordToAdd);
 	mDB.setTransactionSuccessful();
 			} finally{
@@ -70,20 +77,28 @@ public class PetTrackerEntryActivity extends PetTrackerActivity {
 }
 	void fillAutoCompleteFromDatabase()
 	{
-		mCursor = mDB.query(PetType.PETTYPE_TABLE_NAME, new String[] {PetType.PET_TYPE_NAME, PetType._ID}, null, null, null, null, PetType.DEFAULT_SORT_ORDER);
+		mCursor = mDB.query(PetType.PETTYPE_TABLE_NAME, new String[] {PetType.PET_TYPE_NAME, PetType._ID}, null, null,
+				null, null, PetType.DEFAULT_SORT_ORDER);
+		
 		startManagingCursor(mCursor);
+		
 		int iNumberOfSpeciesTypes = mCursor.getCount();
 		String astrAutoTextOptions[] = new String[iNumberOfSpeciesTypes];
 		if ((iNumberOfSpeciesTypes > 0) && (mCursor.moveToFirst()))
 		{
-			for(int i = 0; i < iNumberOfSpeciesTypes; i++);
+			for(int i = 0; i < iNumberOfSpeciesTypes; i++)
 			{
 				astrAutoTextOptions[i] = mCursor.getString(mCursor.getColumnIndex(PetType.PET_TYPE_NAME));
 				mCursor.moveToNext();
 			}
-			ArrayAdapter<String> adapter = new ArrayAdaper<String>(this, android.R.layout.simple_dropdown_item_1line, astrAutoTextOptions);
-			AutoCompleteTextView text = (AutoCompleteTextView) findViewById(R.id.EditTextSpecies);
-			text.setAdapter(adapter);
+			ArrayAdapter<String> adapter =
+			        new ArrayAdapter<String>(
+			            this,
+			            android.R.layout.simple_dropdown_item_1line,
+			            astrAutoTextOptions);
+
+				AutoCompleteTextView text = (AutoCompleteTextView) findViewById(R.id.EditTextSpecies);
+				text.setAdapter(adapter);
 		}
-}
 	}
+}
